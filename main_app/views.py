@@ -1,9 +1,11 @@
 from django.shortcuts import render
+# in order to use the model, we have to import
+from .models import Finch
 
-finches = [ 
-    {'name': 'Canary', 'species': 'Serinus canaria', 'description': 'streak-backed greenish brown', 'lifespan': 15},
+# finches = [ 
+#     {'name': 'Canary', 'species': 'Serinus canaria', 'description': 'streak-backed greenish brown', 'lifespan': 15},
 
-]
+# ]
 
 # Create your views here.
 
@@ -20,3 +22,12 @@ def about(request):
 # define the All Finches view
 def finches_index(request):
     return render(request, 'finches/index.html', { 'finches': finches })
+
+# Detail view for a single finch
+def finches_detail(request, finch_id):
+    # find the finch
+    finch = Finch.objects.get(id=finch_id)
+    # to check this view function before we have html, use a print!
+    # print('this is the finch django found')
+    # print(finch)
+    return render(request, 'finches/detail.html', { 'finch': finch })
