@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 # in order to use the model, we have to import
 from .models import Finch
 
@@ -37,4 +37,12 @@ def finches_detail(request, finch_id):
 class FinchCreate(CreateView):
   model = Finch
   fields = '__all__'
-  success_url = '/finches/{finch_id}'
+
+class FinchUpdate(UpdateView):
+  model = Finch
+  # Let's disallow the renaming of a finch by excluding the name field!
+  fields = ['species', 'description', 'lifespan']
+
+class FinchDelete(DeleteView):
+  model = Finch
+  success_url = '/finches'
