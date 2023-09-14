@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.views.generic.edit import CreateView
 # in order to use the model, we have to import
 from .models import Finch
 
@@ -21,6 +22,7 @@ def about(request):
 
 # define the All Finches view
 def finches_index(request):
+    finches = Finch.objects.all()
     return render(request, 'finches/index.html', { 'finches': finches })
 
 # Detail view for a single finch
@@ -31,3 +33,8 @@ def finches_detail(request, finch_id):
     # print('this is the finch django found')
     # print(finch)
     return render(request, 'finches/detail.html', { 'finch': finch })
+
+class FinchCreate(CreateView):
+  model = Finch
+  fields = '__all__'
+  success_url = '/finches/{finch_id}'

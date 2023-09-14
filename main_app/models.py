@@ -1,4 +1,6 @@
 from django.db import models
+# need the reverse method from django urls for redirects
+from django.urls import reverse
 
 # Create your models here.
 class Finch(models.Model):
@@ -9,3 +11,6 @@ class Finch(models.Model):
 
     def __str__(self):
         return self.name
+    # this is used for redirects from class based views
+    def get_absolute_url(self):
+        return reverse('detail', kwargs={'finch_id': self.id})
