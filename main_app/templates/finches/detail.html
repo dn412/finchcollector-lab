@@ -26,10 +26,10 @@
                         <input type="submit" class="btn" value="Add Feeding">
                       </form>
                       <br>
-                        {% if cat.fed_for_today %}
-                            <div class="card-panel teal-text center-align">{{cat.name}} has been fed all meals for today</div>
+                        {% if finch.fed_for_today %}
+                            <div class="card-panel teal-text center-align">{{finch.name}} has been fed all meals for today</div>
                         {% else %}
-                            <div class="card-panel red-text center-align">{{cat.name}} might be hungry</div>
+                            <div class="card-panel red-text center-align">{{finch.name}} might be hungry</div>
                         {% endif %}
                     <table class="striped">
                       <thead>
@@ -46,6 +46,55 @@
                     </table>
                   </div>
                  </div>
+                 <hr>
+    <div class="row">
+        <div class="col s6">
+            <h3>{{ finch.name }}'s Toys</h3>
+            {% if finch.toys.count %}
+                <!-- loop over the toys and display their info -->
+                {% for toy in finch.toys.all %}
+                    <div class="card">
+                        <div class="card-content">
+                            <span class="card-title">
+                                A <span style="color: {{ toy.color }}">{{ toy.color }}</span> {{ toy.name }}
+                            </span>
+                        </div>
+                        <div class="card-action">
+                            <form action="{% url 'unassoc_toy' finch.id toy.id %}" method="POST">
+                                {% csrf_token %}
+                                <button class="btn red" type="submit">-</button>
+                            </form>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <!-- if we dont have toys, tell the user -->
+                <h5>No Toys 😿</h5>
+            {% endif %}
+        </div>
+        <div class="col s6">
+            <h3>Available Toys</h3>
+            {% if toys.count %}
+                {% for toy in toys.all %}
+                    <div class="card">
+                        <div class="card-content">
+                            <span class="card-title">
+                                A <span style="color: {{ toy.color }}">{{ toy.color }}</span> {{ toy.name }}
+                            </span>
+                        </div>
+                        <div class="card-action">
+                            <form action="{% url 'assoc_toy' finch.id toy.id %}" method="POST">
+                                {% csrf_token %}
+                                <button class="btn" type="submit">+</button>
+                            </form>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <h5>{{ finch.name }} Already Has All Toys Available</h5>
+            {% endif %}
+        </div>
+    </div>
                  <script>
                     const dateEl = document.getElementById('id_date');
                     M.Datepicker.init(dateEl, {
